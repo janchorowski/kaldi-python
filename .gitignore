@@ -4,6 +4,7 @@ __pycache__/
 
 # C extensions
 *.so
+.depend.mk
 
 # Distribution / packaging
 .Python
@@ -52,3 +53,6 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# Temp files
+*~
