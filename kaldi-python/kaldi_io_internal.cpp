@@ -23,8 +23,8 @@ extern "C" {
 #include <matrix/kaldi-vector.h>
 #include <util/table-types.h>
 
-#include <python/python_wrappers.h>
-#include <python/bp_converters.h>
+#include "python_wrappers.h"
+#include "bp_converters.h"
 
 
 using namespace std;
