@@ -24,7 +24,7 @@ class KaldiArgumentParser(argparse.ArgumentParser):
         kwargs['add_help']=False
         #kwargs['fromfile_prefix_chars']='--config='
         version = kwargs.pop('version', None)
-        super(KaldiArgumentParser, self).__init__(*args, **kwargs)
+        super(KaldiArgumentParser, self).__init__(*args, formatter_class=argparse.ArgumentDefaultsHelpFormatter, **kwargs)
         self.version = version
         
     def add_standard_arguments(self):
