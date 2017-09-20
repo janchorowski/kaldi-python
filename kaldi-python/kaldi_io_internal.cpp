@@ -12,6 +12,20 @@ extern "C" {
 #include "numpy/arrayobject.h"
 }
 
+#if PY_MAJOR_VERSION >= 3
+int init_numpy() {
+  import_array();
+}
+#define PYSTRING_ASSTRING PyBytes_AsString
+#define PICKLE "pickle"
+#else
+void init_numpy() {
+  import_array();
+}
+#define PYSTRING_ASSTRING PyString_AsString
+#define PICKLE "cPickle"
+#endif
+
 #include <boost/shared_ptr.hpp>
 #include <boost/static_assert.hpp>
 
@@ -36,7 +50,7 @@ namespace bp = boost::python;
 //keep a copy of the cPickle module in cache
 struct PickleWrapper {
   PickleWrapper() {
-    bp::object pickle = bp::import("cPickle");
+    bp::object pickle = bp::import(PICKLE);
     loads = pickle.attr("loads");
     dumps = pickle.attr("dumps");
   }
@@ -68,7 +82,7 @@ class PyObjectHolder {
         os.write(string, len);
       } else {  //use repr
         PyObject* repr = PyObject_Repr(t.ptr());
-        os << PyString_AsString(repr) << '\n';
+	os << PYSTRING_ASSTRING(repr) << '\n';
         Py_DECREF(repr);
       }
       return os.good();
@@ -394,6 +408,7 @@ public:
           .def("__iter__", &get_self_ref<Reader>,
                bp::return_internal_reference<1>())
           .def("next", sequential_reader_next<Reader>)
+          .def("__next__", sequential_reader_next<Reader>)
           .def("__exit__", &exit<Reader>)
           .def("done", &Reader::Done)
           .def("_kaldi_value", &Reader::Value,
@@ -430,7 +445,7 @@ PyObject* KALDI_BASE_FLOAT() {
 
 BOOST_PYTHON_MODULE(kaldi_io_internal)
 {
-  import_array();
+  init_numpy();
 
   bp::def("KALDI_BASE_FLOAT", &KALDI_BASE_FLOAT);
 

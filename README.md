@@ -25,6 +25,7 @@ It allows you to do e.g.:
 
 # Installation Instructions
 The software should build against a recent version of Kaldi:
-1. Build and install [Kaldi](https://github.com/kaldi-asr/kaldi), make sure to use `configure --shared`
-2. Build kaldi python: `KALDI_ROOT=path_to_kaldi make`
-3. Configure PYTHONPATH: ```export PYTHONPATH=`pwd`/kaldi-python```
+1. Install boos python. For anaconda linix run `conda install boost`
+2. Build and install [Kaldi](https://github.com/kaldi-asr/kaldi), make sure to use `configure --shared`
+3. Build kaldi python: `KALDI_ROOT=path_to_kaldi make`
+4. Configure PYTHONPATH: ```export PYTHONPATH=`pwd`/kaldi-python```

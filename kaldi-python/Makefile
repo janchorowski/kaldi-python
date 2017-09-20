@@ -19,16 +19,14 @@ ADDLIBS = $(KALDI_SRC)/lm/kaldi-lm.a $(KALDI_SRC)/decoder/kaldi-decoder.a $(KALD
 
 TESTFILES =
 
-PYLIB = $(shell python-config --libs)
-PYINC = $(shell python-config --includes)
+PYLIB = $(shell python -c "import sysconfig; print(sysconfig.get_config_var('LDFLAGS'))")
+PYINC = -I$(shell python -c "import sysconfig; print(sysconfig.get_config_var('INCLUDEPY'))")
 NPINC = -I$(shell python -c 'import numpy; print(numpy.get_include())')
-
+BOOST_SUFFIX = $(shell python -c "import sys; print('' if sys.version_info[0] < 3 else '3')")
 PYLIBS = kaldi_io_internal.so
 
-#include $(KALDI_SRC)/makefiles/default_rules.mk
-
 %.so: %.cpp
-		g++ -shared -o $@ -Wall -fPIC -I$(KALDI_SRC) $(PYINC) $(NPINC) $(CXXFLAGS) $< $(ADDLIBS) $(LDFLAGS) -L$(PYLIB) $(LOADLIBES) $(LDLIBS) -lpython2.7 -lboost_python -lboost_system 
+		g++ -shared -o $@ -Wall -fPIC -I$(KALDI_SRC) $(PYINC) $(NPINC) $(CXXFLAGS) $< $(ADDLIBS) $(LDFLAGS) $(PYLIB) $(LOADLIBES) $(LDLIBS) -lboost_python$(BOOST_SUFFIX)
 
 clean:
 	-rm -f *.o *.a *.so $(TESTFILES) $(BINFILES) $(TESTOUTPUTS) tmp* *.tmp
