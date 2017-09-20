@@ -14,14 +14,14 @@ OBJFILES =
 
 ADDLIBS = $(KALDI_SRC)/lm/kaldi-lm.a $(KALDI_SRC)/decoder/kaldi-decoder.a $(KALDI_SRC)/lat/kaldi-lat.a \
           $(KALDI_SRC)/hmm/kaldi-hmm.a $(KALDI_SRC)/transform/kaldi-transform.a $(KALDI_SRC)/gmm/kaldi-gmm.a \
-	      $(KALDI_SRC)/tree/kaldi-tree.a $(KALDI_SRC)/matrix/kaldi-matrix.a  $(KALDI_SRC)/util/kaldi-util.a \
-          $(KALDI_SRC)/base/kaldi-base.a  $(KALDI_SRC)/thread/kaldi-thread.a
+          $(KALDI_SRC)/tree/kaldi-tree.a  $(KALDI_SRC)/util/kaldi-util.a $(KALDI_SRC)/matrix/kaldi-matrix.a \
+          $(KALDI_SRC)/base/kaldi-base.a
 
 TESTFILES =
 
 PYLIB = $(shell python-config --libs)
 PYINC = $(shell python-config --includes)
-NPINC = -I$(shell python -c 'import numpy; print numpy.get_include()')
+NPINC = -I$(shell python -c 'import numpy; print(numpy.get_include())')
 
 PYLIBS = kaldi_io_internal.so
 
